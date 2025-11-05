@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  swift-packages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Swift
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: '5.9'
+      - name: Build & Test SharedKit
+        run: |
+          cd packages/SharedKit
+          swift build
+          swift test
+      - name: Build & Test API
+        run: |
+          cd apps/api
+          swift build
+          swift test
+
+  ios-build:
+    runs-on: macos-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Xcode version
+        run: xcodebuild -version
+      - name: Build iOS app (best-effort)
+        run: |
+          if [ -d "project-tbd.xcworkspace" ]; then \
+            xcodebuild -workspace project-tbd.xcworkspace -scheme ios -destination 'platform=iOS Simulator,name=iPhone 17 Pro' build | xcpretty || true; \
+          else \
+            echo "Skipping iOS build (workspace not found)"; \
+          fi
+
+

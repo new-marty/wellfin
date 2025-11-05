@@ -1,0 +1,12 @@
+--swiftversion 5.9
+--exclude Pods
+--stripunusedargs closure-only
+--self remove
+--ifdef no-indent
+--wraparguments before-first
+--wrapcollections before-first
+
+
+
+
+

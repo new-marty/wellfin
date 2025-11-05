@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  finance-app
+//  ios
 //
 //  Created by Yu Mabuchi on 2025/11/03.
 //
@@ -19,6 +19,4 @@ struct ContentView: View {
     }
 }
 
-#Preview {
-    ContentView()
-}
+
