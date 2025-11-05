@@ -1,12 +1,21 @@
-## Repo Structure Rules
+## Repo Structure Rules (project-tbd)
 
-- Keep iOS, API, and shared code separated: `apps/`, `packages/`, `infra/`, `docs/`.
-- Do not introduce Node/TS unless explicitly requested.
-- Prefer SwiftPM for dependencies; share code via `packages/SharedKit`.
-- Tests are required alongside any new module or feature.
-- Avoid moving the iOS project unless moving the `.xcodeproj` together.
-
-
-
-
-
+- Monorepo root: open `project-tbd.xcworkspace` in Cursor.
+- Top-level dirs:
+  - `apps/api` (Vapor, Fluent, PostgreSQL)
+  - `apps/ios` (Xcode project `ios.xcodeproj`, sources in `apps/ios/ios`)
+  - `packages/SharedKit` (shared DTOs, validation, errors)
+  - `infra/docker` (api.Dockerfile, compose.yml)
+  - `docs` (architecture, roadmap, integrations)
+- Use SwiftPM for all non-iOS dependencies; iOS consumes `SharedKit` as a local package via Xcode.
+- Tests:
+  - API: `apps/api/Tests`
+  - Shared: `packages/SharedKit/Tests`
+  - iOS: keep tests under the Xcode project as it evolves.
+- Naming:
+  - iOS target/scheme is `ios` (no “finance-app”).
+  - Bundle identifier temporary: `new-marty.ios` (replace later).
+- Workspace:
+  - Root workspace `project-tbd.xcworkspace` must reference `apps/ios/ios.xcodeproj`.
+- Build server:
+  - Sweetpad should target `project-tbd.xcworkspace`, scheme `ios`.

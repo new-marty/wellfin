@@ -21,8 +21,3 @@
 - Suggestions (budgets, tagging assists)
 - Crypto adapters (read-only integrations)
 - Magic link login; optional TOTP MFA
-
-
-
-
-

@@ -27,8 +27,3 @@
 - Rate limit and backoff strategy required
 - Idempotent upsert on transactions (keyed by external id + source)
 - Add audit log entries per sync
-
-
-
-
-

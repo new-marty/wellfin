@@ -1,5 +1,9 @@
 {
   "project": "project-tbd",
   "style": { "concise": true },
-  "rules": ["rules/repo-structure.md"]
+  "rules": [
+    "rules/repo-structure.md",
+    "rules/tech-stack.md",
+    "rules/coding-standards.md"
+  ]
 }

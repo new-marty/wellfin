@@ -59,8 +59,3 @@ The current iOS app is at the root to preserve Xcode paths. It can be moved into
 5. iOS client integration using SharedKit (SPM local)
 6. Tests and hardening (rate limiting, logging)
 7. Enhancements (magic links, TOTP MFA, visualizations)
-
-
-
-
-
