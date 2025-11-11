@@ -7,7 +7,7 @@ func routes(_ app: Application) throws {
     }
 
     app.get("version") { req async -> [String: String] in
-        ["service": "FinanceAPI", "status": "running"]
+        ["service": "WellfinAPI", "status": "running"]
     }
 
     app.get("user", ":id") { req async throws -> UserDTO in

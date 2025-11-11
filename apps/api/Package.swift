@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "FinanceAPI",
+    name: "WellfinAPI",
     platforms: [ .macOS(.v13) ],
     products: [
         .executable(name: "Run", targets: ["Run"]) 
