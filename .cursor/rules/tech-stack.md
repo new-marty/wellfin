@@ -2,7 +2,7 @@
 
 ### iOS (SwiftUI)
 - Target name and scheme: `ios`.
-- SwiftUI app entry: `IOSApp` in `apps/ios/ios/IOSApp.swift`.
+- SwiftUI app entry: `WellfinApp` in `apps/ios/ios/WellfinApp.swift`.
 - Avoid top-level executable code in modules that declare `@main`.
 - Prefer MVVM and Swift Concurrency (`async/await`).
 - Add SharedKit via Xcode → Add Packages… → Add Local… → `packages/SharedKit`.
@@ -25,7 +25,7 @@
 
 ### Infra & CI
 - Docker compose at `infra/docker/compose.yml` runs Postgres + API.
-- CI builds `project-tbd.xcworkspace` scheme `ios`, and runs SwiftPM tests for API/SharedKit.
+- CI builds `wellfin.xcworkspace` scheme `ios`, and runs SwiftPM tests for API/SharedKit.
 
 ### Tooling
 - Format with `swiftformat` (see `.swiftformat`).

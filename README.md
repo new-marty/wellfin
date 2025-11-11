@@ -1,6 +1,10 @@
-## project-tbd Monorepo
+## WellFin Monorepo
 
-This repository contains a personal finance tracking app with a modern UI (iOS) and a Swift-based backend using Vapor. It follows a full-Swift stack architecture with a shared package for DTOs, validation, and errors.
+This repository contains WellFin, a personal finance tracking app with a modern UI (iOS) and a Swift-based backend using Vapor. It follows a full-Swift stack architecture with a shared package for DTOs, validation, and errors.
+
+### UI/UX Documentation
+
+See `docs/ui-ux/` for the 2B UI architecture, IA, wireframes, tagging, suggestions, onboarding, unique interactions, data visualization, MVP, and references. Start with `docs/ui-ux/README.md`.
 
 ### Quick Start
 
@@ -29,8 +33,8 @@ swift test
 ### Project Structure
 
 ```
-project-tbd/
-├─ project-tbd.xcworkspace     # Root workspace (open this in Cursor)
+wellfin/
+├─ wellfin.xcworkspace     # Root workspace (open this in Cursor)
 ├─ apps/
 │  ├─ api/                    # Vapor backend (Vapor 4)
 │  │  ├─ Sources/App/
@@ -64,13 +68,13 @@ project-tbd/
 
 2. Open the workspace at repo root
 
-- Open `project-tbd.xcworkspace` in Cursor (File → Open Workspace…)
+- Open `wellfin.xcworkspace` in Cursor (File → Open Workspace…)
 - In Xcode (optional), ensure the `ios` scheme is Shared (Product → Scheme → Manage Schemes… → Shared ✓)
 
 3. Generate build server config (enables IntelliSense/LSP)
 
 - Command Palette → “Sweetpad: Generate Build Server Config”
-  - Workspace: `/Users/yumabuchi/dev/finance-app/project-tbd.xcworkspace`
+  - Workspace: `/Users/yumabuchi/dev/wellfin/wellfin.xcworkspace`
   - Scheme: `ios`
 - If autocompletion is flaky, perform one build in Xcode, then re-run the command above.
 
@@ -82,7 +86,7 @@ project-tbd/
 - iOS app (Terminal):
   ```bash
   xcodebuild \
-    -workspace project-tbd.xcworkspace \
+    -workspace wellfin.xcworkspace \
     -scheme ios \
     -destination "platform=iOS Simulator,name=iPhone 17 Pro,OS=26.0.1" \
     build
@@ -108,8 +112,8 @@ make lint     # swiftlint --quiet
 
 6. Troubleshooting
 
-- Sweetpad error references old paths (finance-app.xcodeproj):
-  - Run “Sweetpad: Clear Build Server Config”, then re-run “Generate Build Server Config” targeting `project-tbd.xcworkspace` + scheme `ios`.
+- Sweetpad error references old paths:
+  - Run "Sweetpad: Clear Build Server Config", then re-run "Generate Build Server Config" targeting `wellfin.xcworkspace` + scheme `ios`.
 - “Cannot find module/SharedKit”:
   - Ensure `packages/SharedKit` is added to targets (Vapor via `Package.swift`, iOS via Xcode → Add Packages… → Add Local…)
 - “‘main’ attribute cannot be used in a module that contains top-level code”:

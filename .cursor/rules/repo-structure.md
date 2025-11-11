@@ -1,6 +1,6 @@
-## Repo Structure Rules (project-tbd)
+## Repo Structure Rules (WellFin)
 
-- Monorepo root: open `project-tbd.xcworkspace` in Cursor.
+- Monorepo root: open `wellfin.xcworkspace` in Cursor.
 - Top-level dirs:
   - `apps/api` (Vapor, Fluent, PostgreSQL)
   - `apps/ios` (Xcode project `ios.xcodeproj`, sources in `apps/ios/ios`)
@@ -13,9 +13,10 @@
   - Shared: `packages/SharedKit/Tests`
   - iOS: keep tests under the Xcode project as it evolves.
 - Naming:
-  - iOS target/scheme is `ios` (no “finance-app”).
-  - Bundle identifier temporary: `new-marty.ios` (replace later).
+  - iOS target/scheme is `ios`.
+  - Bundle identifier: `com.wellfin`.
+  - Product name: `WellFin`.
 - Workspace:
-  - Root workspace `project-tbd.xcworkspace` must reference `apps/ios/ios.xcodeproj`.
+  - Root workspace `wellfin.xcworkspace` must reference `apps/ios/ios.xcodeproj`.
 - Build server:
-  - Sweetpad should target `project-tbd.xcworkspace`, scheme `ios`.
+  - Sweetpad should target `wellfin.xcworkspace`, scheme `ios`.

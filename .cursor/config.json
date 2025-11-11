@@ -1,5 +1,5 @@
 {
-  "project": "project-tbd",
+  "project": "wellfin",
   "style": { "concise": true },
   "rules": [
     "rules/repo-structure.md",
