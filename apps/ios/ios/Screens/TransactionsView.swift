@@ -16,12 +16,10 @@ struct TransactionsView: View {
     #endif
     
     var body: some View {
-        NavigationStack {
-            List(mockTransactions) { transaction in
-                TransactionRow(transaction: transaction)
-            }
-            .navigationTitle("Transactions")
+        List(mockTransactions) { transaction in
+            TransactionRow(transaction: transaction)
         }
+        .navigationTitle("Transactions")
     }
 }
 
@@ -72,6 +70,8 @@ struct TransactionRow: View {
 }
 
 #Preview {
-    TransactionsView()
+    NavigationStack {
+        TransactionsView()
+    }
 }
 

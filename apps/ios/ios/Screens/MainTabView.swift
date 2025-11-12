@@ -45,14 +45,22 @@ struct MainTabView: View {
     @State private var selectedTab: Tab = .home
     @State private var inboxBadgeCount: Int? = nil // Stub for badge support
     
+    // Navigation paths for each tab to preserve state independently
+    @State private var homeNavigationPath = NavigationPath()
+    @State private var inboxNavigationPath = NavigationPath()
+    @State private var transactionsNavigationPath = NavigationPath()
+    @State private var settingsNavigationPath = NavigationPath()
+    
     var body: some View {
         TabView(selection: $selectedTab) {
             ForEach(Tab.allCases, id: \.self) { tab in
-                Group {
-                    if tab == .inbox, let count = inboxBadgeCount {
-                        tab.view.badge(count)
-                    } else {
-                        tab.view
+                NavigationStack(path: navigationPath(for: tab)) {
+                    Group {
+                        if tab == .inbox, let count = inboxBadgeCount {
+                            tab.view.badge(count)
+                        } else {
+                            tab.view
+                        }
                     }
                 }
                 .tabItem {
@@ -63,35 +71,71 @@ struct MainTabView: View {
         }
         .tint(nil) // Use system tint
         .onOpenURL { url in
-            // Deep link routing stub
             handleDeepLink(url)
         }
     }
     
-    // MARK: - Deep Link Routing (Stub)
+    // MARK: - Navigation Path Management
+    
+    /// Returns the appropriate navigation path binding for the given tab
+    private func navigationPath(for tab: Tab) -> Binding<NavigationPath> {
+        switch tab {
+        case .home:
+            return $homeNavigationPath
+        case .inbox:
+            return $inboxNavigationPath
+        case .transactions:
+            return $transactionsNavigationPath
+        case .settings:
+            return $settingsNavigationPath
+        }
+    }
+    
+    /// Returns the current navigation path for the selected tab
+    private var currentNavigationPath: Binding<NavigationPath> {
+        navigationPath(for: selectedTab)
+    }
+    
+    // MARK: - Deep Link Routing
+    
     /// Handles deep links to route to correct tab and push appropriate view
-    /// Stub implementation - actual routing logic to be implemented later
+    /// Supports both tab-level navigation and pushing views within tabs
     private func handleDeepLink(_ url: URL) {
         // Example: wellfin://home, wellfin://inbox, wellfin://transactions, wellfin://settings
+        // Example: wellfin://transactions/123 (pushes transaction detail)
         guard url.scheme == "wellfin" else { return }
         
-        let path = url.host ?? url.pathComponents.first ?? ""
+        let pathComponents = url.pathComponents.filter { $0 != "/" }
+        let tabName = url.host ?? pathComponents.first ?? ""
         
-        switch path {
+        // Switch to the appropriate tab
+        switch tabName {
         case "home":
             selectedTab = .home
+            // Handle nested paths if needed (e.g., wellfin://home/detail)
+            if pathComponents.count > 1 {
+                // Future: push specific views within home tab
+            }
         case "inbox":
             selectedTab = .inbox
+            if pathComponents.count > 1 {
+                // Future: push specific views within inbox tab
+            }
         case "transactions":
             selectedTab = .transactions
+            if pathComponents.count > 1 {
+                let transactionId = pathComponents[1]
+                // Future: push transaction detail view
+                // transactionsNavigationPath.append(transactionId)
+            }
         case "settings":
             selectedTab = .settings
+            if pathComponents.count > 1 {
+                // Future: push specific settings screens
+            }
         default:
             break
         }
-        
-        // TODO: Handle pushing specific views within tabs (e.g., wellfin://transactions/123)
-        // This will be implemented when navigation stacks are added per tab (NM-16)
     }
 }
 

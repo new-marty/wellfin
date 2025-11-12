@@ -9,22 +9,24 @@ import SwiftUI
 
 struct InboxView: View {
     var body: some View {
-        NavigationStack {
-            VStack {
-                Text("Inbox")
-                    .font(.largeTitle)
-                    .padding()
-                
-                Text("Transaction triage and classification")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
-            .navigationTitle("Inbox")
+        VStack {
+            Text("Inbox")
+                .font(.largeTitle)
+                .padding()
+            
+            Text("Transaction triage and classification")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
         }
+        .navigationTitle("Inbox")
     }
 }
 
 #Preview {
-    InboxView()
+    NavigationStack {
+        InboxView()
+    }
 }
+
+
 
