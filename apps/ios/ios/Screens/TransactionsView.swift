@@ -65,9 +65,22 @@ struct TransactionRow: View {
     }
 }
 
-#Preview {
+// MARK: - Previews
+
+#Preview("Default") {
     NavigationStack {
         TransactionsView()
+    }
+}
+
+#Preview("Transaction Row") {
+    NavigationStack {
+        List {
+            TransactionRow(transaction: MockData.transactions.generate())
+            TransactionRow(transaction: MockData.transactions.generate())
+            TransactionRow(transaction: MockData.transactions.generate())
+        }
+        .navigationTitle("Transaction Row Preview")
     }
 }
 
