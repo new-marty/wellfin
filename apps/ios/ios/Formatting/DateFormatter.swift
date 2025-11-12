@@ -45,16 +45,11 @@ struct WellfinDateFormatter {
         return isoFormatter.string(from: date)
     }
     
-    /// Converts numerals to fixed-width tabular numerals where appropriate
+    /// Formats date string - tabular numerals handled via .monospacedDigit() font modifier
     /// This ensures consistent alignment in lists and tables
     private func convertToFixedWidthNumerals(_ string: String) -> String {
-        let tabularMap: [Character: Character] = [
-            "0": "\u{EFF0}", "1": "\u{EFF1}", "2": "\u{EFF2}", "3": "\u{EFF3}",
-            "4": "\u{EFF4}", "5": "\u{EFF5}", "6": "\u{EFF6}", "7": "\u{EFF7}",
-            "8": "\u{EFF8}", "9": "\u{EFF9}"
-        ]
-        
-        return String(string.map { tabularMap[$0] ?? $0 })
+        // Return string as-is - tabular numerals are handled via .monospacedDigit() font modifier
+        return string
     }
     
     /// Formats date with locale-aware pattern
