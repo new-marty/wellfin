@@ -40,6 +40,14 @@ private struct SettingsViewContent: View {
                 }
             }
             
+            Section("Japanese Formatting") {
+                Toggle("Use JPY Display (¥)", isOn: $preferences.useJPYDisplay)
+                
+                Toggle("Use yyyy-mm-dd Date Format", isOn: $preferences.useYYYYMMDDDateFormat)
+                
+                Toggle("Monday Week Start", isOn: $preferences.mondayWeekStart)
+            }
+            
             Section {
                 Button("Reset to Defaults", role: .destructive) {
                     preferences.resetToDefaults()

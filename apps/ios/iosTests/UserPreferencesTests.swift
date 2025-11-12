@@ -51,6 +51,9 @@ final class UserPreferencesTests: XCTestCase {
         XCTAssertTrue(prefs.showNotifications, "Default showNotifications should be true")
         XCTAssertFalse(prefs.demoDataset, "Default demoDataset should be false")
         XCTAssertFalse(prefs.reduceMotion, "Default reduceMotion should be false")
+        XCTAssertTrue(prefs.useJPYDisplay, "Default useJPYDisplay should be true (JP defaults)")
+        XCTAssertTrue(prefs.useYYYYMMDDDateFormat, "Default useYYYYMMDDDateFormat should be true (JP defaults)")
+        XCTAssertTrue(prefs.mondayWeekStart, "Default mondayWeekStart should be true (JP defaults)")
     }
     
     // MARK: - Read/Write Round-Trip Tests
@@ -110,6 +113,50 @@ final class UserPreferencesTests: XCTestCase {
         XCTAssertTrue(savedValue, "Reduce motion should be persisted")
     }
     
+    // MARK: - JP Formatting Toggles Tests
+    
+    func testUseJPYDisplayRoundTrip() throws {
+        let prefs = UserPreferences.shared
+        
+        prefs.useJPYDisplay = false
+        XCTAssertFalse(prefs.useJPYDisplay)
+        
+        let savedValue = UserDefaults.standard.bool(forKey: "userPreferences.useJPYDisplay")
+        XCTAssertFalse(savedValue, "Use JPY display should be persisted")
+        
+        // Test toggle back
+        prefs.useJPYDisplay = true
+        XCTAssertTrue(prefs.useJPYDisplay)
+    }
+    
+    func testUseYYYYMMDDDateFormatRoundTrip() throws {
+        let prefs = UserPreferences.shared
+        
+        prefs.useYYYYMMDDDateFormat = false
+        XCTAssertFalse(prefs.useYYYYMMDDDateFormat)
+        
+        let savedValue = UserDefaults.standard.bool(forKey: "userPreferences.useYYYYMMDDDateFormat")
+        XCTAssertFalse(savedValue, "Use yyyy-mm-dd date format should be persisted")
+        
+        // Test toggle back
+        prefs.useYYYYMMDDDateFormat = true
+        XCTAssertTrue(prefs.useYYYYMMDDDateFormat)
+    }
+    
+    func testMondayWeekStartRoundTrip() throws {
+        let prefs = UserPreferences.shared
+        
+        prefs.mondayWeekStart = false
+        XCTAssertFalse(prefs.mondayWeekStart)
+        
+        let savedValue = UserDefaults.standard.bool(forKey: "userPreferences.mondayWeekStart")
+        XCTAssertFalse(savedValue, "Monday week start should be persisted")
+        
+        // Test toggle back
+        prefs.mondayWeekStart = true
+        XCTAssertTrue(prefs.mondayWeekStart)
+    }
+    
     // MARK: - Reset Tests
     
     func testResetToDefaults() throws {
@@ -131,6 +178,9 @@ final class UserPreferencesTests: XCTestCase {
         XCTAssertTrue(prefs.showNotifications)
         XCTAssertFalse(prefs.demoDataset)
         XCTAssertFalse(prefs.reduceMotion)
+        XCTAssertTrue(prefs.useJPYDisplay)
+        XCTAssertTrue(prefs.useYYYYMMDDDateFormat)
+        XCTAssertTrue(prefs.mondayWeekStart)
     }
     
     // MARK: - Migration Tests

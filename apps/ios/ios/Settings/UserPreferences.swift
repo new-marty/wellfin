@@ -27,6 +27,11 @@ final class UserPreferences {
         static let showNotifications = "\(preferencesPrefix)showNotifications"
         static let demoDataset = "\(preferencesPrefix)demoDataset"
         static let reduceMotion = "\(preferencesPrefix)reduceMotion"
+        
+        // JP formatting toggles
+        static let useJPYDisplay = "\(preferencesPrefix)useJPYDisplay"
+        static let useYYYYMMDDDateFormat = "\(preferencesPrefix)useYYYYMMDDDateFormat"
+        static let mondayWeekStart = "\(preferencesPrefix)mondayWeekStart"
     }
     
     // MARK: - Current Version
@@ -47,6 +52,9 @@ final class UserPreferences {
         self.showNotifications = Self.defaultShowNotifications
         self.demoDataset = Self.defaultDemoDataset
         self.reduceMotion = Self.defaultReduceMotion
+        self.useJPYDisplay = Self.defaultUseJPYDisplay
+        self.useYYYYMMDDDateFormat = Self.defaultUseYYYYMMDDDateFormat
+        self.mondayWeekStart = Self.defaultMondayWeekStart
         
         // Then migrate and load
         migrateIfNeeded()
@@ -90,6 +98,27 @@ final class UserPreferences {
         }
     }
     
+    /// Use JPY currency display format (¥ symbol, Japanese formatting)
+    var useJPYDisplay: Bool {
+        didSet {
+            save(key: Keys.useJPYDisplay, value: useJPYDisplay)
+        }
+    }
+    
+    /// Use yyyy-mm-dd date format (ISO 8601 style)
+    var useYYYYMMDDDateFormat: Bool {
+        didSet {
+            save(key: Keys.useYYYYMMDDDateFormat, value: useYYYYMMDDDateFormat)
+        }
+    }
+    
+    /// Use Monday as week start (instead of Sunday)
+    var mondayWeekStart: Bool {
+        didSet {
+            save(key: Keys.mondayWeekStart, value: mondayWeekStart)
+        }
+    }
+    
     // MARK: - Default Values
     
     private static let defaultCurrencyFormat = "JPY"
@@ -97,6 +126,9 @@ final class UserPreferences {
     private static let defaultShowNotifications = true
     private static let defaultDemoDataset = false
     private static let defaultReduceMotion = false
+    private static let defaultUseJPYDisplay = true // JP defaults
+    private static let defaultUseYYYYMMDDDateFormat = true // JP defaults
+    private static let defaultMondayWeekStart = true // JP defaults
     
     // MARK: - Load Preferences
     
@@ -106,6 +138,9 @@ final class UserPreferences {
         showNotifications = userDefaults.object(forKey: Keys.showNotifications) as? Bool ?? Self.defaultShowNotifications
         demoDataset = userDefaults.object(forKey: Keys.demoDataset) as? Bool ?? Self.defaultDemoDataset
         reduceMotion = userDefaults.object(forKey: Keys.reduceMotion) as? Bool ?? Self.defaultReduceMotion
+        useJPYDisplay = userDefaults.object(forKey: Keys.useJPYDisplay) as? Bool ?? Self.defaultUseJPYDisplay
+        useYYYYMMDDDateFormat = userDefaults.object(forKey: Keys.useYYYYMMDDDateFormat) as? Bool ?? Self.defaultUseYYYYMMDDDateFormat
+        mondayWeekStart = userDefaults.object(forKey: Keys.mondayWeekStart) as? Bool ?? Self.defaultMondayWeekStart
     }
     
     // MARK: - Save Preferences
@@ -155,6 +190,9 @@ final class UserPreferences {
         showNotifications = Self.defaultShowNotifications
         demoDataset = Self.defaultDemoDataset
         reduceMotion = Self.defaultReduceMotion
+        useJPYDisplay = Self.defaultUseJPYDisplay
+        useYYYYMMDDDateFormat = Self.defaultUseYYYYMMDDDateFormat
+        mondayWeekStart = Self.defaultMondayWeekStart
         
         // Clear all preference keys
         let keys = [
@@ -162,7 +200,10 @@ final class UserPreferences {
             Keys.dateFormat,
             Keys.showNotifications,
             Keys.demoDataset,
-            Keys.reduceMotion
+            Keys.reduceMotion,
+            Keys.useJPYDisplay,
+            Keys.useYYYYMMDDDateFormat,
+            Keys.mondayWeekStart
         ]
         
         for key in keys {
