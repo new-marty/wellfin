@@ -4,6 +4,8 @@
   "rules": [
     "rules/repo-structure.md",
     "rules/tech-stack.md",
-    "rules/coding-standards.md"
+    "rules/coding-standards.md",
+    "rules/linear-workflow.md",
+    "rules/documentation.md"
   ]
 }

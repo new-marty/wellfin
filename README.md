@@ -74,7 +74,7 @@ wellfin/
 3. Generate build server config (enables IntelliSense/LSP)
 
 - Command Palette → “Sweetpad: Generate Build Server Config”
-  - Workspace: `/Users/yumabuchi/dev/wellfin/wellfin.xcworkspace`
+  - Workspace: `Root/wellfin.xcworkspace`
   - Scheme: `ios`
 - If autocompletion is flaky, perform one build in Xcode, then re-run the command above.
 
