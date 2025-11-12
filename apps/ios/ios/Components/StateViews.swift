@@ -65,10 +65,10 @@ struct LoadingStateView: View {
                                 .frame(width: 60, height: 60)
                             
                             VStack(alignment: .leading, spacing: SpacingToken.xs) {
-                                RoundedRectangle(cornerRadius: RadiusToken.sm)
+                                RoundedRectangle(cornerRadius: RadiusToken.chip)
                                     .fill(ColorToken.neutral200)
                                     .frame(height: 16)
-                                RoundedRectangle(cornerRadius: RadiusToken.sm)
+                                RoundedRectangle(cornerRadius: RadiusToken.chip)
                                     .fill(ColorToken.neutral200)
                                     .frame(width: 120, height: 12)
                             }
