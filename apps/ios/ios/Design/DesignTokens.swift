@@ -32,11 +32,11 @@ enum ColorToken {
     static var neutral900: Color { .black }
     
     // Role-based colors
-    static var background: Color { .background }
+    static var background: Color { Color(.systemBackground) }
     static var surface: Color { Color(.systemBackground) }
     static var text: Color { .primary }
-    static var textSecondary: Color { .secondary }
-    static var textSubtle: Color { .tertiary }
+    static var textSecondary: Color { Color(.secondaryLabel) }
+    static var textSubtle: Color { Color(.tertiaryLabel) }
     static var focus: Color { .accentColor }
     static var border: Color { Color(.separator) }
 }

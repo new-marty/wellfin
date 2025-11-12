@@ -32,7 +32,7 @@ struct DesignTokensSampleView: View {
                     
                     // Tabular numbers example
                     Text("$1,234.56")
-                        .font(TypographyToken.tabularNumbers(TypographyToken.body(.semibold)))
+                        .font(TypographyToken.tabularNumbers(TypographyToken.body(weight: .semibold)))
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(SpacingToken.lg)
@@ -127,7 +127,7 @@ struct ColorSwatch: View {
                 .frame(width: 60, height: 60)
             Text(name)
                 .font(TypographyToken.caption())
-                .foregroundColor(ColorToken.textSecondary)
+                .foregroundStyle(ColorToken.textSecondary)
         }
     }
 }
@@ -159,6 +159,7 @@ struct RadiusExample: View {
                 .frame(width: 60, height: 60)
             Text(name)
                 .font(TypographyToken.caption())
+                .foregroundStyle(ColorToken.text)
         }
     }
 }
