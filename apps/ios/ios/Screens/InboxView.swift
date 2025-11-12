@@ -54,7 +54,7 @@ struct InboxView: View {
     
     private func logInboxRender() {
         #if DEBUG
-        print("[Inbox] Render - State: \(currentState.rawValue), Transaction count: \(mockTransactions.count)")
+        logInfo("Render - State: \(currentState.rawValue), Transaction count: \(mockTransactions.count)", category: "Inbox")
         #endif
     }
 }
@@ -201,13 +201,13 @@ struct InboxTransactionRow: View {
     
     private func logInboxAction(intent: String, transactionId: String) {
         #if DEBUG
-        print("[Inbox] Action - Intent: \(intent), Transaction ID: \(transactionId)")
+        logInfo("Action - Intent: \(intent), Transaction ID: \(transactionId)", category: "Inbox")
         #endif
     }
     
     private func logInboxUndo(transactionId: String) {
         #if DEBUG
-        print("[Inbox] Undo - Transaction ID: \(transactionId)")
+        logInfo("Undo - Transaction ID: \(transactionId)", category: "Inbox")
         #endif
     }
 }
@@ -303,15 +303,15 @@ extension Classification.KakeiboIntent {
 
 #if DEBUG
 func logInboxRender() {
-    print("[Inbox] Render - List rendered")
+    logInfo("Render - List rendered", category: "Inbox")
 }
 
 func logInboxAction(intent: String, transactionId: String) {
-    print("[Inbox] Action - Intent: \(intent), Transaction ID: \(transactionId)")
+    logInfo("Action - Intent: \(intent), Transaction ID: \(transactionId)", category: "Inbox")
 }
 
 func logInboxUndo(transactionId: String) {
-    print("[Inbox] Undo - Transaction ID: \(transactionId)")
+    logInfo("Undo - Transaction ID: \(transactionId)", category: "Inbox")
 }
 #endif
 

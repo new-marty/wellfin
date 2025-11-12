@@ -15,6 +15,8 @@ struct DebugMenuView: View {
     @State private var selectedDataset: DatasetVariant = .datasetA
     @State private var customSeed: String = "12345"
     @State private var showResetConfirmation = false
+    @State private var showShareSheet = false
+    @State private var screenshotImage: UIImage?
     
     var body: some View {
         NavigationStack {
@@ -81,6 +83,22 @@ struct DebugMenuView: View {
                     }
                 }
                 
+                // Tools Section
+                Section("Tools") {
+                    NavigationLink("Console Panel") {
+                        ConsolePanelView()
+                    }
+                    
+                    Button(action: {
+                        captureScreenshot()
+                    }) {
+                        HStack {
+                            Label("Capture Screenshot", systemImage: "camera.fill")
+                            Spacer()
+                        }
+                    }
+                }
+                
                 // Reset Section
                 Section {
                     Button(role: .destructive, action: {
@@ -104,6 +122,11 @@ struct DebugMenuView: View {
             } message: {
                 Text("This will reset all screen states and dataset settings to their default values.")
             }
+            .sheet(isPresented: $showShareSheet) {
+                if let image = screenshotImage {
+                    ShareSheet(activityItems: [image])
+                }
+            }
         }
     }
     
@@ -111,6 +134,24 @@ struct DebugMenuView: View {
         screenStateManager.resetAllToDefault()
         selectedDataset = .datasetA
         customSeed = "12345"
+    }
+    
+    private func captureScreenshot() {
+        logInfo("Screenshot capture requested from debug menu", category: "Screenshot")
+        
+        // Capture current window with metadata
+        if let image = ScreenshotHelper.captureCurrentWindow(
+            screenName: "Debug Menu",
+            dataset: selectedDataset.rawValue,
+            seed: customSeed,
+            showOverlay: true
+        ) {
+            screenshotImage = image
+            showShareSheet = true
+            logInfo("Screenshot captured successfully", category: "Screenshot")
+        } else {
+            logError("Failed to capture screenshot", category: "Screenshot")
+        }
     }
 }
 
