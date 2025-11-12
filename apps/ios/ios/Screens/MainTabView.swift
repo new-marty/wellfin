@@ -95,7 +95,18 @@ struct MainTabView: View {
     }
 }
 
-#Preview {
+#Preview("Light Mode") {
     MainTabView()
+        .previewAppearance(colorScheme: .light)
+}
+
+#Preview("Dark Mode") {
+    MainTabView()
+        .previewAppearance(colorScheme: .dark)
+}
+
+#Preview("Large Text") {
+    MainTabView()
+        .previewAppearance(sizeCategory: .accessibilityExtraExtraExtraLarge)
 }
 

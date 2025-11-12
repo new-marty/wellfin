@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct WellfinApp: App {
+    init() {
+        // Configure global appearance at app launch
+        AppAppearance.configure()
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .applyGlobalAppearance()
         }
     }
 }
