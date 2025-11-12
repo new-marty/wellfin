@@ -73,7 +73,7 @@ extension WellfinListRow where Leading == Text {
         
         WellfinListRow(title: "Row with Trailing") {
             Image(systemName: "chevron.right")
-                .font(.system(size: 14))
+                .font(.system(.footnote))
                 .foregroundColor(ColorToken.textSubtle)
         } action: {}
         

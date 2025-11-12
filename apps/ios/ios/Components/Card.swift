@@ -53,4 +53,42 @@ struct WellfinCard<Content: View>: View {
     .background(ColorToken.background)
 }
 
+#Preview("Light Mode") {
+    ScrollView {
+        VStack(spacing: SpacingToken.lg) {
+            WellfinCard {
+                VStack(alignment: .leading, spacing: SpacingToken.md) {
+                    Text("Card Title")
+                        .font(TypographyToken.headline())
+                    Text("Card content adapts to appearance.")
+                        .font(TypographyToken.body())
+                        .foregroundColor(ColorToken.textSecondary)
+                }
+            }
+        }
+        .padding()
+    }
+    .background(ColorToken.background)
+    .preferredColorScheme(.light)
+}
+
+#Preview("Dark Mode") {
+    ScrollView {
+        VStack(spacing: SpacingToken.lg) {
+            WellfinCard {
+                VStack(alignment: .leading, spacing: SpacingToken.md) {
+                    Text("Card Title")
+                        .font(TypographyToken.headline())
+                    Text("Card content adapts to appearance.")
+                        .font(TypographyToken.body())
+                        .foregroundColor(ColorToken.textSecondary)
+                }
+            }
+        }
+        .padding()
+    }
+    .background(ColorToken.background)
+    .preferredColorScheme(.dark)
+}
+
 

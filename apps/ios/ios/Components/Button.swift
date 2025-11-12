@@ -162,3 +162,23 @@ struct WellfinButton: View {
     .padding()
 }
 
+#Preview("Light Mode") {
+    VStack(spacing: SpacingToken.lg) {
+        WellfinButton(title: "Primary", variant: .primary, size: .medium) {}
+        WellfinButton(title: "Secondary", variant: .secondary, size: .medium) {}
+        WellfinButton(title: "Ghost", variant: .ghost, size: .medium) {}
+    }
+    .padding()
+    .preferredColorScheme(.light)
+}
+
+#Preview("Dark Mode") {
+    VStack(spacing: SpacingToken.lg) {
+        WellfinButton(title: "Primary", variant: .primary, size: .medium) {}
+        WellfinButton(title: "Secondary", variant: .secondary, size: .medium) {}
+        WellfinButton(title: "Ghost", variant: .ghost, size: .medium) {}
+    }
+    .padding()
+    .preferredColorScheme(.dark)
+}
+

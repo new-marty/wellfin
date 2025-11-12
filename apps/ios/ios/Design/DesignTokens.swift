@@ -14,22 +14,23 @@ enum ColorToken {
     // Primary colors
     static var primary: Color { .accentColor }
     
-    // Semantic colors
-    static var success: Color { .green }
-    static var warning: Color { .orange }
-    static var danger: Color { .red }
+    // Semantic colors (using system colors that adapt to appearance)
+    static var success: Color { Color(.systemGreen) }
+    static var warning: Color { Color(.systemOrange) }
+    static var danger: Color { Color(.systemRed) }
     
     // Neutral palette (0-900 scale, mapped to system grays)
-    static var neutral0: Color { .white }
-    static var neutral100: Color { Color(white: 0.95) }
-    static var neutral200: Color { Color(white: 0.9) }
-    static var neutral300: Color { Color(white: 0.8) }
-    static var neutral400: Color { Color(white: 0.7) }
-    static var neutral500: Color { .gray }
-    static var neutral600: Color { Color(white: 0.4) }
-    static var neutral700: Color { Color(white: 0.3) }
-    static var neutral800: Color { Color(white: 0.2) }
-    static var neutral900: Color { .black }
+    // Using system colors that adapt to light/dark mode
+    static var neutral0: Color { Color(.systemBackground) }
+    static var neutral100: Color { Color(.secondarySystemBackground) }
+    static var neutral200: Color { Color(.tertiarySystemBackground) }
+    static var neutral300: Color { Color(.separator) }
+    static var neutral400: Color { Color(.systemGray4) }
+    static var neutral500: Color { Color(.systemGray) }
+    static var neutral600: Color { Color(.systemGray2) }
+    static var neutral700: Color { Color(.systemGray3) }
+    static var neutral800: Color { Color(.systemGray5) }
+    static var neutral900: Color { Color(.label) }
     
     // Role-based colors
     static var background: Color { Color(.systemBackground) }

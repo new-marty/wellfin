@@ -29,7 +29,8 @@ struct WellfinChip: View {
                 
                 if style == .filter && isSelected {
                     Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 12))
+                        .font(.system(.caption2))
+                        .symbolRenderingMode(.hierarchical)
                 }
             }
             .padding(.horizontal, SpacingToken.sm)
