@@ -53,6 +53,14 @@ private struct SettingsViewContent: View {
                     preferences.resetToDefaults()
                 }
             }
+            
+            #if DEBUG
+            Section("Debug") {
+                NavigationLink("Debug Menu") {
+                    DebugMenuView()
+                }
+            }
+            #endif
         }
         .navigationTitle("Settings")
     }
