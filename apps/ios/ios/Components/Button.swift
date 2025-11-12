@@ -74,7 +74,7 @@ struct WellfinButton: View {
         .opacity(isDisabled ? 0.6 : 1.0)
         .accessibilityLabel(title)
         .accessibilityHint(isDisabled ? "Button disabled" : isLoading ? "Loading" : "")
-        .accessibilityAddTraits(isDisabled ? .isNotEnabled : [])
+        .accessibilityAddTraits(.isButton)
     }
     
     private var backgroundColor: Color {
