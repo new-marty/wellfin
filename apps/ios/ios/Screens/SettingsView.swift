@@ -17,6 +17,7 @@ struct SettingsView: View {
 
 private struct SettingsViewContent: View {
     @Bindable var preferences: UserPreferences
+    @State private var showingResetConfirmation = false
     
     var body: some View {
         Form {
@@ -59,13 +60,36 @@ private struct SettingsViewContent: View {
                 }
             }
             
+            Section("Data Management") {
+                Button("Reset Data", role: .destructive) {
+                    showingResetConfirmation = true
+                }
+                .alert("Reset Data", isPresented: $showingResetConfirmation) {
+                    Button("Cancel", role: .cancel) { }
+                    Button("Reset", role: .destructive) {
+                        resetDataToDefaults()
+                    }
+                } message: {
+                    Text("This will restore demo data to defaults. This action cannot be undone.")
+                }
+            }
+            
             Section {
-                Button("Reset to Defaults", role: .destructive) {
+                Button("Reset Preferences to Defaults", role: .destructive) {
                     preferences.resetToDefaults()
                 }
             }
         }
         .navigationTitle("Settings")
+    }
+    
+    /// Resets demo data to defaults by resetting dataset selection
+    private func resetDataToDefaults() {
+        // Reset dataset to default (A)
+        preferences.selectedDataset = "A"
+        
+        // Note: In a real implementation, this would also reset any cached data
+        // For MVP, resetting the dataset selection is sufficient
     }
 }
 
