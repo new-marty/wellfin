@@ -178,3 +178,5 @@ struct ColorRow: View {
         .environment(\.sizeCategory, .accessibilityExtraExtraExtraLarge)
 }
 
+
+

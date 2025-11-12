@@ -150,3 +150,5 @@ The app should adapt automatically to all these settings.
 - Override system appearance globally (except in `AppAppearance`)
 - Use fixed-size SF Symbols
 
+
+

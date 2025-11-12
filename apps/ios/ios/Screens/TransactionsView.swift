@@ -83,6 +83,9 @@ private struct TransactionsContentView: View {
     @Binding var selectedTimeRange: TimeRangeFilter
     @Binding var selectedCategory: String?
     @Binding var selectedIntent: String?
+    @State private var selectedTransactions: Set<String> = []
+    @State private var isEditMode = false
+    @State private var showUndo = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -102,11 +105,108 @@ private struct TransactionsContentView: View {
                 )
             } else {
                 List(transactions) { transaction in
-                    TransactionRow(transaction: transaction)
+                    NavigationLink(value: transaction) {
+                        TransactionRow(
+                            transaction: transaction,
+                            isSelected: selectedTransactions.contains(transaction.id),
+                            isEditMode: isEditMode,
+                            onSelect: {
+                                if selectedTransactions.contains(transaction.id) {
+                                    selectedTransactions.remove(transaction.id)
+                                } else {
+                                    selectedTransactions.insert(transaction.id)
+                                }
+                            }
+                        )
+                    }
                 }
                 .searchable(text: $searchText, prompt: "Search transactions")
+                .navigationDestination(for: Transaction.self) { transaction in
+                    TransactionDetailView(transaction: transaction)
+                }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(isEditMode ? "Done" : "Edit") {
+                            isEditMode.toggle()
+                            if !isEditMode {
+                                selectedTransactions.removeAll()
+                            }
+                        }
+                    }
+                }
+                .overlay(alignment: .bottom) {
+                    if isEditMode && !selectedTransactions.isEmpty {
+                        BulkActionsToolbar(
+                            selectedCount: selectedTransactions.count,
+                            onBulkAction: { action in
+                                performBulkAction(action)
+                            }
+                        )
+                    }
+                }
+                .overlay(alignment: .bottom) {
+                    if showUndo {
+                        UndoBanner(
+                            message: "Bulk action completed",
+                            onUndo: {
+                                undoBulkAction()
+                            }
+                        )
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+                }
             }
         }
+    }
+    
+    private func performBulkAction(_ action: BulkAction) {
+        // Stub - no-op actions
+        showUndo = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            showUndo = false
+        }
+    }
+    
+    private func undoBulkAction() {
+        showUndo = false
+    }
+}
+
+enum BulkAction {
+    case changeCategory
+    case addTag
+    case markIntent
+}
+
+struct BulkActionsToolbar: View {
+    let selectedCount: Int
+    let onBulkAction: (BulkAction) -> Void
+    
+    var body: some View {
+        HStack(spacing: SpacingToken.md) {
+            Text("\(selectedCount) selected")
+                .font(TypographyToken.body())
+            
+            Spacer()
+            
+            Button(action: { onBulkAction(.changeCategory) }) {
+                Label("Category", systemImage: "tag")
+            }
+            .accessibilityLabel("Change category for selected transactions")
+            
+            Button(action: { onBulkAction(.addTag) }) {
+                Label("Tag", systemImage: "tag.fill")
+            }
+            .accessibilityLabel("Add tag to selected transactions")
+            
+            Button(action: { onBulkAction(.markIntent) }) {
+                Label("Intent", systemImage: "checkmark.circle")
+            }
+            .accessibilityLabel("Mark intent for selected transactions")
+        }
+        .padding(SpacingToken.md)
+        .background(ColorToken.surface)
+        .elevation(.overlay)
     }
 }
 
@@ -171,9 +271,20 @@ struct FilterBarView: View {
 
 struct TransactionRow: View {
     let transaction: Transaction
+    var isSelected: Bool = false
+    var isEditMode: Bool = false
+    var onSelect: (() -> Void)? = nil
     
     var body: some View {
         HStack {
+            if isEditMode {
+                Button(action: { onSelect?() }) {
+                    Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                        .foregroundStyle(isSelected ? ColorToken.primary : ColorToken.neutral400)
+                }
+                .accessibilityLabel(isSelected ? "Deselect transaction" : "Select transaction")
+            }
+            
             VStack(alignment: .leading, spacing: 4) {
                 Text(transaction.merchant ?? "Unknown")
                     .font(.headline)
@@ -189,6 +300,9 @@ struct TransactionRow: View {
                 .foregroundStyle(transaction.amount < 0 ? .red : .primary)
         }
         .padding(.vertical, 4)
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Transaction: \(transaction.merchant ?? "Unknown"), \(formatAmount(transaction.amount, currency: transaction.currency))")
     }
     
     private func formatAmount(_ amount: Decimal, currency: String) -> String {

@@ -44,18 +44,38 @@ struct HomeView: View {
 }
 
 private struct HomeContentView: View {
+    @State private var showSTSBreakdown = false
+    @Environment(UserPreferences.self) private var preferences
+    
+    // Mock data - will be replaced with real data provider later
+    private let stsValue: Decimal = 125000
+    private let ringData: [(category: String, amount: Decimal, color: Color)] = [
+        ("Groceries", 45000, .green),
+        ("Dining", 32000, .blue),
+        ("Transport", 28000, .purple),
+        ("Shopping", 20000, .orange)
+    ]
+    private let suggestions = MockData.suggestions.generatePending(count: 3)
+    
     var body: some View {
         ScrollView {
-            VStack(spacing: SpacingToken.lg) {
-                Text("Home")
-                    .font(.largeTitle)
-                    .padding()
+            VStack(spacing: SpacingToken.xl) {
+                // STS Header (NM-23)
+                STSHeaderView(
+                    value: stsValue,
+                    onTap: { showSTSBreakdown = true }
+                )
                 
-                Text("Safe-to-Spend and next best actions")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                // Money Rings (NM-24)
+                MoneyRingsView(data: ringData)
+                
+                // Suggestions List (NM-25)
+                SuggestionsListView(suggestions: suggestions)
             }
-            .padding()
+            .padding(SpacingToken.lg)
+        }
+        .sheet(isPresented: $showSTSBreakdown) {
+            STSBreakdownSheet(stsValue: stsValue)
         }
     }
 }

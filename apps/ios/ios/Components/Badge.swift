@@ -13,6 +13,7 @@ enum BadgeVariant {
     case warning
     case danger
     case neutral
+    case info
 }
 
 enum BadgeSize {
@@ -71,6 +72,8 @@ struct WellfinBadge: View {
             return ColorToken.danger.opacity(0.1)
         case .neutral:
             return ColorToken.neutral200
+        case .info:
+            return Color.blue.opacity(0.1)
         }
     }
     
@@ -86,6 +89,8 @@ struct WellfinBadge: View {
             return ColorToken.danger
         case .neutral:
             return ColorToken.text
+        case .info:
+            return .blue
         }
     }
 }
@@ -110,5 +115,8 @@ struct WellfinBadge: View {
     }
     .padding()
 }
+
+
+
 
 
