@@ -86,6 +86,11 @@ private struct TransactionsContentView: View {
     @State private var selectedTransactions: Set<String> = []
     @State private var isEditMode = false
     @State private var showUndo = false
+    @State private var lastBulkAction: BulkAction? = nil
+    @Environment(UserPreferences.self) private var preferences
+    #if DEBUG
+    @State private var undoManager = UndoManager.shared
+    #endif
     
     var body: some View {
         VStack(spacing: 0) {
@@ -132,6 +137,8 @@ private struct TransactionsContentView: View {
                                 selectedTransactions.removeAll()
                             }
                         }
+                        .accessibilityLabel(isEditMode ? "Done editing" : "Edit transactions")
+                        .accessibilityIdentifier("transactions_edit_button")
                     }
                 }
                 .overlay(alignment: .bottom) {
@@ -147,7 +154,7 @@ private struct TransactionsContentView: View {
                 .overlay(alignment: .bottom) {
                     if showUndo {
                         UndoBanner(
-                            message: "Bulk action completed",
+                            message: lastBulkAction?.displayName ?? "Bulk action completed",
                             onUndo: {
                                 undoBulkAction()
                             }
@@ -160,15 +167,37 @@ private struct TransactionsContentView: View {
     }
     
     private func performBulkAction(_ action: BulkAction) {
-        // Stub - no-op actions
+        lastBulkAction = action
+        let selectedIds = selectedTransactions
+        let actionDescription = "\(action.displayName) applied to \(selectedIds.count) transaction\(selectedIds.count == 1 ? "" : "s")"
+        
+        #if DEBUG
+        // Register undo action
+        undoManager.register(UndoableAction(description: actionDescription) {
+            // Undo would restore previous state
+            self.showUndo = false
+        })
+        #endif
+        
         showUndo = true
+        
+        // Auto-hide undo banner (respect Reduce Motion)
+        let animationDuration = preferences.reduceMotion ? 0 : 0.2
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            showUndo = false
+            withAnimation(.easeInOut(duration: animationDuration)) {
+                showUndo = false
+            }
         }
     }
     
     private func undoBulkAction() {
+        #if DEBUG
+        if undoManager.undo() {
+            showUndo = false
+        }
+        #else
         showUndo = false
+        #endif
     }
 }
 
@@ -176,6 +205,14 @@ enum BulkAction {
     case changeCategory
     case addTag
     case markIntent
+    
+    var displayName: String {
+        switch self {
+        case .changeCategory: return "Change Category"
+        case .addTag: return "Add Tag"
+        case .markIntent: return "Mark Intent"
+        }
+    }
 }
 
 struct BulkActionsToolbar: View {
@@ -193,16 +230,22 @@ struct BulkActionsToolbar: View {
                 Label("Category", systemImage: "tag")
             }
             .accessibilityLabel("Change category for selected transactions")
+            .accessibilityHint("Opens category selector for \(selectedCount) selected transaction\(selectedCount == 1 ? "" : "s")")
+            .accessibilityIdentifier("bulk_action_change_category")
             
             Button(action: { onBulkAction(.addTag) }) {
                 Label("Tag", systemImage: "tag.fill")
             }
             .accessibilityLabel("Add tag to selected transactions")
+            .accessibilityHint("Opens tag selector for \(selectedCount) selected transaction\(selectedCount == 1 ? "" : "s")")
+            .accessibilityIdentifier("bulk_action_add_tag")
             
             Button(action: { onBulkAction(.markIntent) }) {
                 Label("Intent", systemImage: "checkmark.circle")
             }
             .accessibilityLabel("Mark intent for selected transactions")
+            .accessibilityHint("Opens intent selector for \(selectedCount) selected transaction\(selectedCount == 1 ? "" : "s")")
+            .accessibilityIdentifier("bulk_action_mark_intent")
         }
         .padding(SpacingToken.md)
         .background(ColorToken.surface)

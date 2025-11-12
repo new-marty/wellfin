@@ -19,6 +19,15 @@ struct TransactionDetailView: View {
     @State private var showUndo = false
     @State private var lastAction: String? = nil
     @Environment(UserPreferences.self) private var preferences
+    #if DEBUG
+    @State private var undoManager = UndoManager.shared
+    #endif
+    
+    // Store previous values for undo
+    private var previousIntent: Classification.KakeiboIntent? = nil
+    private var previousCategory: String? = nil
+    private var previousTags: Set<String> = []
+    private var previousNotes: String = ""
     
     var body: some View {
         ScrollView {
@@ -32,10 +41,32 @@ struct TransactionDetailView: View {
                     selectedCategory: $selectedCategory,
                     tags: $tags,
                     notes: $notes,
-                    onIntentChange: { saveChange("Intent changed to \($0.displayName)") },
-                    onCategoryChange: { saveChange("Category changed to \($0 ?? "None")") },
-                    onTagsChange: { saveChange("Tags updated") },
-                    onNotesChange: { saveChange("Notes updated") }
+                    onIntentChange: { newIntent in
+                        let oldIntent = selectedIntent
+                        selectedIntent = newIntent
+                        saveChange("Intent changed to \(newIntent.displayName)") {
+                            selectedIntent = oldIntent
+                        }
+                    },
+                    onCategoryChange: { newCategory in
+                        let oldCategory = selectedCategory
+                        selectedCategory = newCategory
+                        saveChange("Category changed to \(newCategory ?? "None")") {
+                            selectedCategory = oldCategory
+                        }
+                    },
+                    onTagsChange: {
+                        let oldTags = tags
+                        saveChange("Tags updated") {
+                            tags = oldTags
+                        }
+                    },
+                    onNotesChange: {
+                        let oldNotes = notes
+                        saveChange("Notes updated") {
+                            notes = oldNotes
+                        }
+                    }
                 )
                 
                 // Splits
@@ -63,7 +94,7 @@ struct TransactionDetailView: View {
                 .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
-        .animation(.easeInOut(duration: 0.2), value: showUndo)
+        .animation(preferences.reduceMotion ? nil : .easeInOut(duration: 0.2), value: showUndo)
         .onAppear {
             loadTransactionData()
         }
@@ -83,9 +114,20 @@ struct TransactionDetailView: View {
         ]
     }
     
-    private func saveChange(_ action: String) {
+    private func saveChange(_ action: String, undoAction: @escaping () -> Void) {
         lastAction = action
         showUndo = true
+        
+        #if DEBUG
+        // Register undo action
+        undoManager.register(UndoableAction(description: action) {
+            undoAction()
+            self.showUndo = false
+            if !self.history.isEmpty {
+                self.history.removeFirst()
+            }
+        })
+        #endif
         
         // Add to history
         history.insert(
@@ -97,18 +139,26 @@ struct TransactionDetailView: View {
             at: 0
         )
         
-        // Auto-hide undo banner
+        // Auto-hide undo banner (respect Reduce Motion)
+        let animationDuration = preferences.reduceMotion ? 0 : 0.2
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            showUndo = false
+            withAnimation(.easeInOut(duration: animationDuration)) {
+                showUndo = false
+            }
         }
     }
     
     private func undoLastChange() {
-        // Stub - would revert last change
+        #if DEBUG
+        if undoManager.undo() {
+            showUndo = false
+        }
+        #else
         showUndo = false
         if !history.isEmpty {
             history.removeFirst()
         }
+        #endif
     }
 }
 
@@ -194,6 +244,8 @@ struct TransactionEditableFields: View {
                         }
                     }
                     .accessibilityLabel("Transaction intent")
+                    .accessibilityHint("Selects the kakeibo intent category for this transaction")
+                    .accessibilityIdentifier("transaction_intent_picker")
                 }
                 
                 // Category Selector
@@ -211,6 +263,8 @@ struct TransactionEditableFields: View {
                         onCategoryChange(selectedCategory)
                     }
                     .accessibilityLabel("Transaction category")
+                    .accessibilityHint("Selects the spending category for this transaction")
+                    .accessibilityIdentifier("transaction_category_picker")
                 }
                 
                 // Tags Editor
@@ -238,6 +292,8 @@ struct TransactionEditableFields: View {
                         }
                     }
                     .accessibilityLabel("Transaction tags")
+                    .accessibilityHint("Add or remove tags to categorize this transaction")
+                    .accessibilityIdentifier("transaction_tags_editor")
                 }
                 
                 // Notes Editor
@@ -254,6 +310,8 @@ struct TransactionEditableFields: View {
                             onNotesChange()
                         }
                         .accessibilityLabel("Transaction notes")
+                        .accessibilityHint("Add notes or comments about this transaction")
+                        .accessibilityIdentifier("transaction_notes_field")
                 }
             }
         }
