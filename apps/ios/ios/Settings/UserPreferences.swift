@@ -32,6 +32,9 @@ final class UserPreferences {
         static let useJPYDisplay = "\(preferencesPrefix)useJPYDisplay"
         static let useYYYYMMDDDateFormat = "\(preferencesPrefix)useYYYYMMDDDateFormat"
         static let mondayWeekStart = "\(preferencesPrefix)mondayWeekStart"
+        
+        // Demo mode
+        static let selectedDataset = "\(preferencesPrefix)selectedDataset"
     }
     
     // MARK: - Current Version
@@ -55,6 +58,7 @@ final class UserPreferences {
         self.useJPYDisplay = Self.defaultUseJPYDisplay
         self.useYYYYMMDDDateFormat = Self.defaultUseYYYYMMDDDateFormat
         self.mondayWeekStart = Self.defaultMondayWeekStart
+        self.selectedDataset = Self.defaultSelectedDataset
         
         // Then migrate and load
         migrateIfNeeded()
@@ -119,6 +123,13 @@ final class UserPreferences {
         }
     }
     
+    /// Selected demo dataset ("A" or "B")
+    var selectedDataset: String {
+        didSet {
+            save(key: Keys.selectedDataset, value: selectedDataset)
+        }
+    }
+    
     // MARK: - Default Values
     
     private static let defaultCurrencyFormat = "JPY"
@@ -129,6 +140,7 @@ final class UserPreferences {
     private static let defaultUseJPYDisplay = true // JP defaults
     private static let defaultUseYYYYMMDDDateFormat = true // JP defaults
     private static let defaultMondayWeekStart = true // JP defaults
+    private static let defaultSelectedDataset = "A" // Default to dataset A
     
     // MARK: - Load Preferences
     
@@ -141,6 +153,7 @@ final class UserPreferences {
         useJPYDisplay = userDefaults.object(forKey: Keys.useJPYDisplay) as? Bool ?? Self.defaultUseJPYDisplay
         useYYYYMMDDDateFormat = userDefaults.object(forKey: Keys.useYYYYMMDDDateFormat) as? Bool ?? Self.defaultUseYYYYMMDDDateFormat
         mondayWeekStart = userDefaults.object(forKey: Keys.mondayWeekStart) as? Bool ?? Self.defaultMondayWeekStart
+        selectedDataset = userDefaults.string(forKey: Keys.selectedDataset) ?? Self.defaultSelectedDataset
     }
     
     // MARK: - Save Preferences
@@ -193,6 +206,7 @@ final class UserPreferences {
         useJPYDisplay = Self.defaultUseJPYDisplay
         useYYYYMMDDDateFormat = Self.defaultUseYYYYMMDDDateFormat
         mondayWeekStart = Self.defaultMondayWeekStart
+        selectedDataset = Self.defaultSelectedDataset
         
         // Clear all preference keys
         let keys = [
@@ -203,7 +217,8 @@ final class UserPreferences {
             Keys.reduceMotion,
             Keys.useJPYDisplay,
             Keys.useYYYYMMDDDateFormat,
-            Keys.mondayWeekStart
+            Keys.mondayWeekStart,
+            Keys.selectedDataset
         ]
         
         for key in keys {

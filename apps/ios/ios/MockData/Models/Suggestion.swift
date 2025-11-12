@@ -36,3 +36,5 @@ struct Suggestion: Identifiable, Codable, Equatable {
     }
 }
 
+
+

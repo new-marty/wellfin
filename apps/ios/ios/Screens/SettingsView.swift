@@ -48,6 +48,17 @@ private struct SettingsViewContent: View {
                 Toggle("Monday Week Start", isOn: $preferences.mondayWeekStart)
             }
             
+            Section("Demo Mode") {
+                Picker("Dataset", selection: $preferences.selectedDataset) {
+                    Text("Dataset A").tag("A")
+                    Text("Dataset B").tag("B")
+                }
+                .onChange(of: preferences.selectedDataset) { _, _ in
+                    // Dataset change will be reflected via MockData.currentProvider
+                    // UI will update when views refresh
+                }
+            }
+            
             Section {
                 Button("Reset to Defaults", role: .destructive) {
                     preferences.resetToDefaults()

@@ -10,24 +10,37 @@ import Foundation
 
 /// Convenience accessors for mock data generators
 enum MockData {
-    /// Default transaction generator
+    /// Current dataset provider based on user preferences
+    private static var currentProvider: MockDataProvider {
+        let selectedDataset = UserPreferences.shared.selectedDataset
+        switch selectedDataset {
+        case "B":
+            return DatasetBProvider.shared
+        case "A":
+            return DatasetAProvider.shared
+        default:
+            return DatasetAProvider.shared
+        }
+    }
+    
+    /// Default transaction generator (uses selected dataset)
     static var transactions: TransactionGenerator {
-        TransactionGenerator(provider: DefaultMockDataProvider.shared)
+        TransactionGenerator(provider: currentProvider)
     }
     
-    /// Default account generator
+    /// Default account generator (uses selected dataset)
     static var accounts: AccountGenerator {
-        AccountGenerator(provider: DefaultMockDataProvider.shared)
+        AccountGenerator(provider: currentProvider)
     }
     
-    /// Default classification generator
+    /// Default classification generator (uses selected dataset)
     static var classifications: ClassificationGenerator {
-        ClassificationGenerator(provider: DefaultMockDataProvider.shared)
+        ClassificationGenerator(provider: currentProvider)
     }
     
-    /// Default suggestion generator
+    /// Default suggestion generator (uses selected dataset)
     static var suggestions: SuggestionGenerator {
-        SuggestionGenerator(provider: DefaultMockDataProvider.shared)
+        SuggestionGenerator(provider: currentProvider)
     }
     
     /// Preview transaction generator (different seed)
@@ -50,4 +63,6 @@ enum MockData {
         SuggestionGenerator(provider: PreviewMockDataProvider.shared)
     }
 }
+
+
 

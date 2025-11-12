@@ -37,3 +37,19 @@ struct PreviewMockDataProvider: MockDataProvider {
     static let shared = PreviewMockDataProvider()
 }
 
+/// Dataset A mock data provider
+struct DatasetAProvider: MockDataProvider {
+    let seed: UInt64 = 11111
+    
+    static let shared = DatasetAProvider()
+}
+
+/// Dataset B mock data provider
+struct DatasetBProvider: MockDataProvider {
+    let seed: UInt64 = 22222
+    
+    static let shared = DatasetBProvider()
+}
+
+
+
