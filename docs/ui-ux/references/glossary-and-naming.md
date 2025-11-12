@@ -37,3 +37,4 @@ Additional terms
 - **STS confidence**: High — forecast share <20% and all contractual items known; Medium — 20–50% forecast or some contracts unknown; Low — >50% forecast or key items missing.
 
 
+

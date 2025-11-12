@@ -20,3 +20,4 @@ Note: This app prioritizes evidence-based nudges with transparent rationale and 
 - Money Rings: Immediate feedback loop → habit formation via streaks and closure cues
 
 
+
