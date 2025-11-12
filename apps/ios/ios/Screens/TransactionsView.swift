@@ -8,18 +8,65 @@
 import SwiftUI
 
 struct TransactionsView: View {
+    // Using mock data for now - will be replaced with real data provider later
+    #if DEBUG
+    private let mockTransactions = MockData.transactions.generate(count: 20)
+    #else
+    private let mockTransactions: [Transaction] = []
+    #endif
+    
     var body: some View {
         NavigationStack {
-            VStack {
-                Text("Transactions")
-                    .font(.largeTitle)
-                    .padding()
-                
-                Text("Browse and filter transactions")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+            List(mockTransactions) { transaction in
+                TransactionRow(transaction: transaction)
             }
             .navigationTitle("Transactions")
+        }
+    }
+}
+
+struct TransactionRow: View {
+    let transaction: Transaction
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(transaction.merchant ?? "Unknown")
+                    .font(.headline)
+                Text(formatChannel(transaction.channel))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            
+            Spacer()
+            
+            Text(formatAmount(transaction.amount, currency: transaction.currency))
+                .font(.body.monospacedDigit())
+                .foregroundStyle(transaction.amount < 0 ? .red : .primary)
+        }
+        .padding(.vertical, 4)
+    }
+    
+    private func formatAmount(_ amount: Decimal, currency: String) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = currency
+        formatter.currencySymbol = currency == "JPY" ? "¥" : nil
+        return formatter.string(from: amount as NSDecimalNumber) ?? "\(amount)"
+    }
+    
+    private func formatChannel(_ channel: Transaction.TransactionChannel) -> String {
+        switch channel {
+        case .card:
+            return "Card"
+        case .cash:
+            return "Cash"
+        case .bankTransfer:
+            return "Bank Transfer"
+        case .digitalWallet:
+            return "Digital Wallet"
+        case .other:
+            return "Other"
         }
     }
 }
