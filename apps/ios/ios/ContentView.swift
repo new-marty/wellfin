@@ -10,6 +10,11 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         MainTabView()
+            #if DEBUG
+            .overlay(alignment: .topTrailing) {
+                DebugOverlayView()
+            }
+            #endif
     }
 }
 
