@@ -46,11 +46,7 @@ struct TransactionRow: View {
     }
     
     private func formatAmount(_ amount: Decimal, currency: String) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.currencyCode = currency
-        formatter.currencySymbol = currency == "JPY" ? "¥" : nil
-        return formatter.string(from: amount as NSDecimalNumber) ?? "\(amount)"
+        CurrencyFormatter.format(amount, currencyCode: currency)
     }
     
     private func formatChannel(_ channel: Transaction.TransactionChannel) -> String {
