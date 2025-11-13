@@ -175,7 +175,7 @@ struct InboxTransactionRow: View {
     }
     
     private func setIntent(_ intent: Classification.KakeiboIntent) {
-        let previousIntent = currentIntent
+        let _ = currentIntent  // Store previous value for potential undo
         currentIntent = intent
         showUndo = true
         

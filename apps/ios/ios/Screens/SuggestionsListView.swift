@@ -7,6 +7,7 @@
 //  Suggestions list/cards component with impact badges and timers
 
 import SwiftUI
+import Combine
 
 struct SuggestionsListView: View {
     let suggestions: [Suggestion]
@@ -63,7 +64,7 @@ struct SuggestionCard: View {
                 // Impact badge
                 HStack {
                     WellfinBadge(
-                        text: suggestion.expectedImpact,
+                        suggestion.expectedImpact,
                         variant: .info
                     )
                 }
@@ -152,7 +153,7 @@ struct SuggestionDetailSheet: View {
                         .font(TypographyToken.title())
                     
                     WellfinBadge(
-                        text: suggestion.expectedImpact,
+                        suggestion.expectedImpact,
                         variant: .info
                     )
                     
@@ -215,4 +216,5 @@ struct SuggestionDetailSheet: View {
     SuggestionsListView(suggestions: MockData.suggestions.generatePending(count: 3))
         .environment(UserPreferences.shared)
 }
+
 

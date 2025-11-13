@@ -124,8 +124,7 @@ struct MainTabView: View {
         case "transactions":
             selectedTab = .transactions
             if pathComponents.count > 1 {
-                let transactionId = pathComponents[1]
-                // Future: push transaction detail view
+                let _ = pathComponents[1]  // Future: push transaction detail view
                 // transactionsNavigationPath.append(transactionId)
             }
         case "settings":

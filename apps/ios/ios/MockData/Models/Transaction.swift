@@ -8,7 +8,7 @@
 import Foundation
 
 /// Represents a financial transaction
-struct Transaction: Identifiable, Codable, Equatable {
+struct Transaction: Identifiable, Codable, Equatable, Hashable {
     let id: String
     let accountId: String
     let amount: Decimal
@@ -28,4 +28,5 @@ struct Transaction: Identifiable, Codable, Equatable {
         case other
     }
 }
+
 

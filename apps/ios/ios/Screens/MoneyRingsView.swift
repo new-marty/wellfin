@@ -140,3 +140,4 @@ struct MoneyRingsTableView: View {
     .padding()
 }
 
+

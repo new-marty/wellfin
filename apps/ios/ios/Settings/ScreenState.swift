@@ -34,6 +34,7 @@ enum ScreenIdentifier: String, CaseIterable {
     case home = "home"
     case inbox = "inbox"
     case transactions = "transactions"
+    case tagging = "tagging"
     
     var displayName: String {
         switch self {
@@ -43,6 +44,8 @@ enum ScreenIdentifier: String, CaseIterable {
             return "Inbox"
         case .transactions:
             return "Transactions"
+        case .tagging:
+            return "Tagging"
         }
     }
 }
@@ -111,4 +114,5 @@ final class ScreenStateManager {
         "screenState.\(screen.rawValue)"
     }
 }
+
 

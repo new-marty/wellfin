@@ -29,6 +29,10 @@ struct TransactionDetailView: View {
     private var previousTags: Set<String> = []
     private var previousNotes: String = ""
     
+    init(transaction: Transaction) {
+        self.transaction = transaction
+    }
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: SpacingToken.xl) {
