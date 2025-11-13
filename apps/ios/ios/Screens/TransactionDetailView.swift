@@ -73,7 +73,12 @@ struct TransactionDetailView: View {
                 TransactionSplitsSection(
                     splits: $splits,
                     totalAmount: transaction.amount,
-                    onSplitChange: { saveChange("Split updated") }
+                    onSplitChange: {
+                        let oldSplits = splits
+                        saveChange("Split updated") {
+                            splits = oldSplits
+                        }
+                    }
                 )
                 
                 // History
@@ -356,7 +361,7 @@ struct TransactionSplitsSection: View {
                                 onSplitChange()
                             }) {
                                 Image(systemName: "trash")
-                                    .foregroundStyle(.red)
+                                    .foregroundStyle(Color.red)
                             }
                         }
                     }
@@ -370,7 +375,7 @@ struct TransactionSplitsSection: View {
                         Text(CurrencyFormatter.format(splitsTotal, currencyCode: "JPY"))
                             .font(TypographyToken.headline())
                             .font(.headline.monospacedDigit())
-                            .foregroundStyle(splitsTotal == totalAmount ? .primary : .red)
+                            .foregroundStyle(splitsTotal == totalAmount ? .primary : Color.red)
                     }
                 }
             }
@@ -443,6 +448,7 @@ struct TransactionHistoryEvent: Identifiable {
 struct AddSplitSheet: View {
     let totalAmount: Decimal
     let existingSplits: [TransactionSplit]
+    let onAdd: (TransactionSplit) -> Void
     @Environment(\.dismiss) private var dismiss
     
     @State private var description = ""
@@ -471,7 +477,8 @@ struct AddSplitSheet: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
-                        // Validation stub
+                        let split = TransactionSplit(description: description, amount: amount)
+                        onAdd(split)
                         dismiss()
                     }
                     .disabled(description.isEmpty || amount <= 0)
